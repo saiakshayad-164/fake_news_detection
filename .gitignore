@@ -1,0 +1,35 @@
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Generated model and outputs
+models/
+outputs/
+
+# Raw dataset
+data/SMSSpamCollection.tsv
+
+# Keep cleaned dataset
+!data/sms_spam_clean.csv
+
+# Jupyter temporary files
+.ipynb_checkpoints/
+
+# Editor and OS files
+.vscode/
+.env
+*.log
+.DS_Store
+Thumbs.db
+
+# Exclude unnecessary project documentation
+LINE_BY_LINE_CODE_GUIDE.md
+SUBMISSION_NOTES.txt
+VIVA_QUESTIONS.md
+generate_report.py
