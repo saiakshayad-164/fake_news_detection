@@ -1,68 +1,67 @@
-# SMS Shield — Text Classification using Machine Learning
+# NewsLens — Fake News Detection
 
-## Project details
-- **Domain:** Text Classification
-- **Case study:** SMS Spam Detection
-- **Algorithm:** Multinomial Naive Bayes
-- **Feature extraction:** TF-IDF (unigrams + bigrams)
-- **Dataset:** UCI SMS Spam Collection (CC BY 4.0)
-- **Interface:** Streamlit, fully light themed
+A supervised NLP application that predicts whether a news article resembles the Fake or Real examples in a labelled historical dataset. It includes a Streamlit interface, TF-IDF features, model comparison, and evaluation visualizations.
 
-## What the project does
-The application classifies an SMS message as `spam` or `ham` (legitimate). It downloads the authentic UCI dataset, validates and cleans it, performs a stratified 80:20 split, trains a TF-IDF + Multinomial Naive Bayes pipeline, calculates the required classification metrics and provides a live interface.
+> Important: This is an educational text-classification model, not a fact-checking service. It does not verify claims against live sources. Predictions reflect patterns in the dataset and must not be treated as proof that an article is true or false.
 
-## Setup on Windows 11 / VS Code
+## Dataset
 
-Open this folder in VS Code. Open **Terminal → New Terminal** and run each command separately:
+This project uses the ISOT Fake and Real News Dataset:
+- Fake.csv: articles labelled Fake.
+- True.csv: articles labelled Real.
+- Both files contain headlines and article text.
+- The loader downloads the files on first use from a public GitHub mirror. Raw data is not committed to this repository.
 
-```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-python train_model.py
-python generate_report.py
-```
+Dataset background: the ISOT description says real articles were collected from Reuters and fake articles from sources identified as unreliable. The dataset is historical and predominantly covers political and world news.
 
-The first training run downloads the original dataset. Internet access is required for this one-time download. If PowerShell blocks activation, use:
+## Workflow
 
-```powershell
-.venv\Scripts\activate.bat
-```
+1. Download labelled Fake and Real CSV files.
+2. Combine headline and article body.
+3. Remove missing, very short, and duplicate article text.
+4. Extract TF-IDF word unigram and bigram features.
+5. Train and compare Multinomial Naive Bayes and Logistic Regression.
+6. Select the model with the higher macro F1-score.
+7. Evaluate on a stratified held-out test set.
+8. Save the model, metrics, report, and confusion matrix.
 
-Then launch the app:
+## Structure
 
-```powershell
-streamlit run app.py
-```
+- app.py — Streamlit interface
+- src_data_loader.py — dataset download and cleaning
+- train_model.py — model training and evaluation
+- data/ — downloaded and cleaned data (not committed)
+- models/ — saved trained model (not committed)
+- outputs/ — metrics and visualizations (not committed)
+- PROJECT_REPORT.md — case study report
+- Fake_News_Classification.ipynb — Jupyter notebook
 
-A browser tab should open. If it does not, copy the `Local URL` shown in the terminal (usually `http://localhost:8501`) into your browser.
+## Run locally (Windows PowerShell)
 
-## Files created after training
-- `data/SMSSpamCollection.tsv` — downloaded original dataset
-- `data/sms_spam_clean.csv` — cleaned data used for training/testing
-- `models/sms_spam_pipeline.joblib` — fitted TF-IDF + Naive Bayes pipeline
-- `outputs/metrics.json` — measured metrics and split details
-- `outputs/classification_report.txt` — per-class report
-- `outputs/confusion_matrix.png` — confusion matrix figure
-- `PROJECT_REPORT_FINAL.pdf` — report populated with actual measured metrics (add your own live demo screenshots)
+    python -m venv .venv
+    .venv\Scripts\Activate.ps1
+    python -m pip install -r requirements.txt
+    python src_data_loader.py
+    python train_model.py
+    streamlit run app.py
 
-## Reproducibility and quality checks
-- Fixed `random_state=42`
-- Stratified 80:20 train-test split
-- TF-IDF is fitted only on training data through a scikit-learn Pipeline
-- Duplicate and empty messages are removed before splitting
-- The test set is not used for fitting the model
-- Model and metrics are saved locally for review
-- Both classes are checked before training
+The first dataset download may take a few minutes. The app can trigger training automatically if the model is missing.
 
-## Dataset source and attribution
-Almeida, T. & Hidalgo, J. (2011). *SMS Spam Collection* [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5CC84
+## Evaluation
 
-License: Creative Commons Attribution 4.0 International (CC BY 4.0).
+The training script compares accuracy, macro precision, macro recall, and macro F1-score. It selects the model with the higher macro F1-score. Actual scores are generated when training runs; no performance figures are assumed in advance.
 
-## Important
-This is an educational model, not a production security filter. A high confidence score does not guarantee a message is safe. The dataset is English-language and reflects older SMS patterns.
+## Responsible use
 
-## Code explanation
-Read `LINE_BY_LINE_CODE_GUIDE.md`. The Python files also contain section headings and comments. The Jupyter notebook contains the same workflow in sequential cells.
+- A high confidence score is not a probability that a claim is factually true.
+- Dataset labels and source composition may introduce bias.
+- The historical data may not represent current events or new misinformation techniques.
+- Verify consequential claims with multiple reputable and independent sources.
+
+## Dataset citation
+
+ISOT Fake News Dataset, Information Security and Object Technology (ISOT) Research Group, University of Victoria:
+https://onlineacademiccommunity.uvic.ca/isot/wp-content/uploads/sites/7295/2023/02/ISOT_Fake_News_Dataset_ReadMe.pdf
+
+Public mirror used by the loader:
+https://github.com/Reinforz/Fake-News-detection-with-ISOT-Dataset
