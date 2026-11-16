@@ -1,35 +1,21 @@
-
-# Virtual environment
+# Virtual environments
 .venv/
 venv/
 env/
-
 # Python cache
 __pycache__/
 *.py[cod]
-
-# Generated model and outputs
+# Generated models and outputs
 models/
 outputs/
-
-# Raw dataset
-data/SMSSpamCollection.tsv
-
-# Keep cleaned dataset
-!data/sms_spam_clean.csv
-
-# Jupyter temporary files
+# Downloaded and generated datasets
+data/*.csv
+!data/README.md
+# Jupyter
 .ipynb_checkpoints/
-
-# Editor and OS files
+# Editors and OS
 .vscode/
 .env
 *.log
 .DS_Store
 Thumbs.db
-
-# Exclude unnecessary project documentation
-LINE_BY_LINE_CODE_GUIDE.md
-SUBMISSION_NOTES.txt
-VIVA_QUESTIONS.md
-generate_report.py
