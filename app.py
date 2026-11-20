@@ -54,7 +54,7 @@ with left:
     st.subheader("Analyse a news article")
     title = st.text_input("News headline (optional)", placeholder="Enter the article headline")
     article = st.text_area("News article text", height=270, placeholder="Paste the full news article here...")
-    classify = st.button("Classify News", type="primary", width="stretch")
+    classify = st.button("Classify News", type="primary", use_container_width=True)
 with right:
     st.subheader("How it works")
     st.markdown("""
@@ -92,10 +92,10 @@ if metrics:
     c4.metric("Macro F1-score", f"{metrics['f1_macro']:.2%}")
     st.subheader("Algorithm comparison")
     rows = [{"Model":name, **{key.replace("_"," ").title():f"{value:.2%}" for key,value in values.items()}} for name,values in metrics["models"].items()]
-    st.dataframe(rows, width="stretch", hide_index=True)
+    st.dataframe(rows, use_container_width=True, hide_index=True)
     if MATRIX_PATH.exists():
         st.subheader("Confusion matrix")
-        st.image(str(MATRIX_PATH), width="stretch")
+        st.image(str(MATRIX_PATH), use_container_width=True)
     if REPORT_PATH.exists():
         with st.expander("View classification report"):
             st.text(REPORT_PATH.read_text(encoding="utf-8"))
